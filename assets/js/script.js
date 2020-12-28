@@ -71,7 +71,11 @@ var createQuizQuestion = function(questionStatus){
   questionContainerEl.appendChild(answerChoiceContainerEl);
   pageContentEl.appendChild(questionContainerEl);}
   
-
+  var countdown = function(){
+  var timeInterval = setInterval(function() {
+    timeRemaining--;
+    console.log(timeRemaining);
+    }, 1000);}
 //task button handler will determine what happens with a click
 //CONSIDER using a switch for the taskButton a switch 
 var taskButtonHandler = function(event) {
@@ -83,6 +87,7 @@ var taskButtonHandler = function(event) {
   }
   else if (targetEl.matches(".start-button")) {
   createQuizQuestion(questionStatus); 
+  countdown();
   } 
 };
 var checkAnswerChoice = function(targetEl) {
@@ -107,6 +112,7 @@ var checkAnswerChoice = function(targetEl) {
     answerResultEl.setAttribute ("id", questionStatus);
     answerResultEl.textContent = "Wrong!";
     pageContentEl.appendChild(answerResultEl);
+    timeRemaining -=10;
   }
   questionStatus++;
   if (questionStatus < quizArray.length && timeRemaining>0) {
