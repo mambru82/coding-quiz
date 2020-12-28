@@ -2,24 +2,17 @@
 var quizArray = [{
   questionNumber: 1,
   questionTxt: "A for loop is often used for the purposes of:",
-  answerTxt1: "Iterating through a string of values",
-  answerTxt2: "For forring your forest",
-  answerTxt3: "Flipping burgers",
-  answerTF1: true,
-  answerTF2: false,
-  answerTF3: false
+  answerChoices: ["Iterating through a string of values", 
+  "For forring your forest", "Flipping burgers"],
+  answerKey: [true, false, false],
 },
 {
   questionNumber: 2,
   questionTxt: "The main difference between a for loop and a while loop is:",
-  answerTxt1: "one fors, one whiles",
-  answerTxt2: "one sets an incremental loop, the other sets a loop with a fixed condition",
-  answerTxt3: "Your momma",
-  answerTF1: false,
-  answerTF2: true,
-  answerTF3: false 
+  answerChoices: ["one fors, one whiles", "one sets an incremental loop, the other sets a loop with a fixed condition", "Your momma"],
+  answerKey: [false, true, false]
 }]
-var questionsRemaining = quizArray.length;
+var questionStatus=0;
 var quizScore = 0;
 var pageContentEl = document.querySelector("#page-content");
 //WHEN I click the start button
@@ -31,26 +24,48 @@ var pageContentEl = document.querySelector("#page-content");
 
 //Quiz functionality
   //Array of possible answers is presented as buttons 
-var createQuizQuestion = function(event){
+var createQuizQuestion = function(questionStatus){
+  if (questionStatus < quizArray.length) {
   var questionContainerEl = document.createElement("div");
   questionContainerEl.className = "quiz-question";
+  questionContainerEl.setAttribute("id", questionStatus);
 
   // render quiz question
-  questionContainerEl.innerHTML = "<h3 class='question-number'>" +  quizArray[0].questionNumber + "</h3><span class='question-text'>" + quizArray[0].questionTxt + "</span>";
+  questionContainerEl.innerHTML = "<h3 class='question-number'>" +  quizArray[questionStatus].questionNumber + "</h3><span class='question-text'>" + quizArray[questionStatus].questionTxt + "</span>";
 
   // render answer choices
   var answerChoiceContainerEl = document.createElement("ol");
+
+  for (var i=0; i < quizArray[questionStatus].answerChoices.length; i++) {
   var answerChoiceEl = document.createElement("li");
   var answerButtonEl = document.createElement("button");
-  answerButtonEl.textContent = quizArray[0].answerTxt1;
+  answerButtonEl.textContent = quizArray[questionStatus].answerChoices[i];
   answerButtonEl.className = "btn answer-choice";
-
+  answerButtonEl.setAttribute("data-id", i);
   answerChoiceEl.appendChild(answerButtonEl);
   answerChoiceContainerEl.appendChild(answerChoiceEl);
+  }
   questionContainerEl.appendChild(answerChoiceContainerEl);
-  pageContentEl.appendChild(questionContainerEl);
+  pageContentEl.appendChild(questionContainerEl);}
+  else {console.log("end of the quiz!")}
 }
 
+var taskButtonHandler = function(event) {
+  //get target element from event
+  var targetEl = event.target;
+  var answerId = targetEl.getAttribute("data-id");
+  console.log(answerId);
+  if (quizArray[questionStatus].answerKey[answerId]===true) {
+    console.log("right answer!");
+  } else {console.log("wrong answer!")}
+
+  //clear question
+  var questionClear = document.querySelector(".quiz-question[id='" + questionStatus + "']");
+  questionClear.remove();
+  
+  questionStatus++;
+  createQuizQuestion(questionStatus);
+};
 var checkAnswerChoice = function(event) {
   //compare the answer choice to answer key
   //if answer key is true
@@ -116,5 +131,5 @@ function displayMessage() {
 
 //startBtn.onclick = countdown;
 
-createQuizQuestion();
-
+createQuizQuestion(questionStatus);
+pageContentEl.addEventListener("click", taskButtonHandler)
