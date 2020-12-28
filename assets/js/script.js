@@ -18,6 +18,18 @@ var pageContentEl = document.querySelector("#page-content");
 //WHEN I click the start button
   //Start of quiz function
 
+var codingQuizStart = function(event) {
+  var quizStartContainerEl = document.createElement("div");
+  quizStartContainerEl.className = "starting-page";
+  quizStartContainerEl.innerHTML = "<h2 class='welcome-page'> Coding Quiz Challenge </h2>";
+  quizStartContainerEl.innerHTML = "<p class='welcome-content'> Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds! </p>";
+  var startButtonEl = document.createElement("button");
+  startButtonEl.className = "btn start-button";
+  startButtonEl.textContent = "Start Quiz";
+
+  quizStartContainerEl.appendChild(startButtonEl);
+  pageContentEl.appendChild(quizStartContainerEl);
+}
 //THEN a timer starts and I am presented with a question
 
 //Transitioning from start to first question function
@@ -49,22 +61,38 @@ var createQuizQuestion = function(questionStatus){
   pageContentEl.appendChild(questionContainerEl);}
   else {console.log("end of the quiz!")}
 }
-
+//task button handler will determine what happens with a click
 var taskButtonHandler = function(event) {
   //get target element from event
   var targetEl = event.target;
+  //if an answer choice was clicked
+  if (targetEl.matches(".answer-choice")){
   var answerId = targetEl.getAttribute("data-id");
   console.log(answerId);
-  if (quizArray[questionStatus].answerKey[answerId]===true) {
-    console.log("right answer!");
-  } else {console.log("wrong answer!")}
-
   //clear question
   var questionClear = document.querySelector(".quiz-question[id='" + questionStatus + "']");
+    if (quizArray[questionStatus].answerKey[answerId]===true) {
+   //create the answer message
+    var answerResultEl = document.createElement("div");
+    answerResultEl.setAttribute ("class", "quiz-question");
+    answerResultEl.setAttribute ("id", questionStatus+1);
+    answerResultEl.textContent = "Correct!";
+    pageContentEl.appendChild(answerResultEl);
+    quizScore++;
+  } else {
+    var answerResultEl = document.createElement("div");
+    answerResultEl.setAttribute ("class", "quiz-question");
+    answerResultEl.setAttribute ("id", questionStatus+1);
+    answerResultEl.textContent = "Wrong!";
+    pageContentEl.appendChild(answerResultEl);
+  }
   questionClear.remove();
-  
   questionStatus++;
-  createQuizQuestion(questionStatus);
+  createQuizQuestion(questionStatus);}
+  else if (targetEl.matches(".start-button")) {
+  createQuizQuestion(questionStatus); 
+  }
+
 };
 var checkAnswerChoice = function(event) {
   //compare the answer choice to answer key
@@ -131,5 +159,5 @@ function displayMessage() {
 
 //startBtn.onclick = countdown;
 
-createQuizQuestion(questionStatus);
+codingQuizStart();
 pageContentEl.addEventListener("click", taskButtonHandler)
