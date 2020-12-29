@@ -20,12 +20,11 @@ var quizArray = [{
 }]
 var questionStatus=0;
 var quizScore = 0;
-var timeRemaining = 75;
+var timeRemaining = 20;
 var pageContentEl = document.querySelector("#page-content");
 var footerContentEl = document.querySelector("#footer-element");
-//WHEN I click the start button
-  //Start of quiz function
 
+//Function renders initial screen with start button
 var codingQuizStart = function(event) {
   var quizStartContainerEl = document.createElement("div");
   quizStartContainerEl.className = "starting-page";
@@ -37,11 +36,25 @@ var codingQuizStart = function(event) {
   quizStartContainerEl.appendChild(startButtonEl);
   pageContentEl.appendChild(quizStartContainerEl);
 }
-//THEN a timer starts and I am presented with a question
+//Function renders end of quiz screen with form submission
 var createFinalScore = function(event) {
   var quizEndContainerEl = document.createElement ("div");
   quizEndContainerEl.className = "end-screen";
   quizEndContainerEl.innerHTML = "<h1 class='end-page'>All done! </h1> <p class='end-content'>Your final score is " + quizScore + ". </p>";
+  var highScorePromptEl = document.createElement("div");
+  highScorePromptEl.setAttribute("class", "form-group");
+  highScorePromptEl.innerHTML="<h3>Enter your Initials to save your score!</h3>";
+  var highScoreFormEl = document.createElement ("div");
+  highScoreFormEl.setAttribute("class", "form-group");
+  highScoreFormEl.setAttribute("id", "task-form");
+  highScoreFormEl.innerHTML = "<input type='text' name='initials' placeholder='Enter your initials!'/>";
+  var scoreSubmitBtnEl = document.createElement ("button");
+  scoreSubmitBtnEl.setAttribute("form", "btn answer-choice");
+  scoreSubmitBtnEl.textContent = "Submit";
+  quizEndContainerEl.appendChild(highScorePromptEl);
+  quizEndContainerEl.appendChild(highScoreFormEl);
+  quizEndContainerEl.appendChild(scoreSubmitBtnEl);
+  console.log(quizEndContainerEl);
   pageContentEl.appendChild(quizEndContainerEl);
 }
 //Quiz functionality
@@ -49,7 +62,9 @@ var createFinalScore = function(event) {
 var createQuizQuestion = function(questionStatus){
   if (questionStatus===0) {
   var clearStart = document.querySelector(".starting-page"); 
-  clearStart.remove();}
+  clearStart.remove();
+  }
+
   var questionContainerEl = document.createElement("div");
   questionContainerEl.className = "quiz-question";
   questionContainerEl.setAttribute("id", questionStatus);
@@ -74,8 +89,15 @@ var createQuizQuestion = function(questionStatus){
   
   var countdown = function(){
   var timeInterval = setInterval(function() {
+    if (timeRemaining===0){
+    clearInterval(timeInterval);
+    var questionClear = document.querySelector(".quiz-question");
+    questionClear.remove();
+    createFinalScore();
+    } else {
     timeRemaining--;
     console.log(timeRemaining);
+    return timeRemaining;}
     }, 1000);}
 //task button handler will determine what happens with a click
 //CONSIDER using a switch for the taskButton a switch 
