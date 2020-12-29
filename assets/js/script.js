@@ -22,6 +22,7 @@ var questionStatus=0;
 var quizScore = 0;
 var timeRemaining = 75;
 var pageContentEl = document.querySelector("#page-content");
+var footerContentEl = document.querySelector("#footer-element");
 //WHEN I click the start button
   //Start of quiz function
 
@@ -83,6 +84,9 @@ var taskButtonHandler = function(event) {
   var targetEl = event.target;
   //if an answer choice was clicked
   if (targetEl.matches(".answer-choice")){
+    //clears previous question and answer
+    var questionClear = document.querySelector(".quiz-question");
+    questionClear.remove();
     checkAnswerChoice(targetEl);
   }
   else if (targetEl.matches(".start-button")) {
@@ -91,27 +95,20 @@ var taskButtonHandler = function(event) {
   } 
 };
 var checkAnswerChoice = function(targetEl) {
+ if (questionStatus>0) {
+   var answerClear = document.querySelector(".answer-status");
+   answerClear.remove();
+  }
   var answerId = targetEl.getAttribute("data-id");
   console.log(answerId);
   //clear question
   //var questionClear = document.querySelector(".quiz-question[id='" + questionStatus + "']");
-  var questionClear = document.querySelector(".quiz-question");
-  questionClear.remove();
-  if (quizArray[questionStatus].answerKey[answerId]===true) {
+    if (quizArray[questionStatus].answerKey[answerId]===true) {
    //create the answer message
-    var answerResultEl = document.createElement("div");
-    answerResultEl.setAttribute ("class", "quiz-question");
-    answerResultEl.setAttribute ("id", questionStatus);
-    answerResultEl.textContent = "Correct!";
-    console.log(answerResultEl);
-    pageContentEl.appendChild(answerResultEl);
+    createAnswerCheck("Correct!");
     quizScore++;
   } else {
-    var answerResultEl = document.createElement("div");
-    answerResultEl.setAttribute ("class", "quiz-question");
-    answerResultEl.setAttribute ("id", questionStatus);
-    answerResultEl.textContent = "Wrong!";
-    pageContentEl.appendChild(answerResultEl);
+    createAnswerCheck("Wrong!");
     timeRemaining -=10;
   }
   questionStatus++;
@@ -120,6 +117,14 @@ var checkAnswerChoice = function(targetEl) {
   else {console.log("end of the quiz!");
   createFinalScore();
   }
+}
+
+var createAnswerCheck = function(string) {
+  var answerResultEl = document.createElement("div");
+  answerResultEl.setAttribute ("class", "answer-status");
+  answerResultEl.setAttribute ("id", questionStatus);
+  answerResultEl.textContent = string;
+  footerContentEl.appendChild(answerResultEl);
 }
 
   //compare the answer choice to answer key
