@@ -18,6 +18,7 @@ var quizArray = [{
   answerChoices: ["no", "yes"],
   answerKey: [false, true]
 }]
+
 var questionStatus=0;
 var quizScore = 0;
 var timeRemaining = 20;
@@ -126,11 +127,14 @@ var checkAnswerChoice = function(targetEl) {
   //clear question
   //var questionClear = document.querySelector(".quiz-question[id='" + questionStatus + "']");
     if (quizArray[questionStatus].answerKey[answerId]===true) {
-   //create the answer message
+   //create the answer message if correct
     createAnswerCheck("Correct!");
+    //adds point for correct answer
     quizScore++;
   } else {
+    //create the answer message if incorrect
     createAnswerCheck("Wrong!");
+    //subtracts 
     timeRemaining -=10;
   }
   questionStatus++;
