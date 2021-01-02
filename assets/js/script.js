@@ -18,14 +18,13 @@ var quizArray = [{
   answerChoices: ["no", "yes"],
   answerKey: [false, true]
 }]
-
+var highScores = [];
 var questionStatus=0;
 var timeRemaining=65;
 var quizScore = 0;
 var pageContentEl = document.querySelector("#page-content");
 var footerContentEl = document.querySelector("#footer-element");
 var scoreKeepEl = document.querySelector("#score-content");
-
 //renders the timer element and the link to the high scores
 var timeRemainingEl = document.createElement("div");
 timeRemainingEl.setAttribute("text-align", "right");
@@ -43,6 +42,51 @@ highScoreEl.appendChild(highScoreButtonEl);
 scoreKeepEl.appendChild(highScoreEl);
 scoreKeepEl.appendChild(timeRemainingEl);
 
+//loads the scores saved on local storage
+var loadScores = function () {
+highScores = localStorage.getItem("scores");
+if (highScores === null) {
+  highScores = [];
+  return false
+}
+highScores = JSON.parse(highScores);
+}
+
+//function to display the scores
+var displayScores = function (event) {
+//sort the scores on the array from highest to lowest
+var sortedScores = highScores.slice(0);
+sortedScores.sort(function(a,b){return b.score - a.score})
+console.log(sortedScores);
+// clear the screen
+var highScoreEl = document.createElement("ol");
+
+for (let i=0; i < sortedScores.length; i++) {
+var highScoreLog = document.createElement("li");
+highScoreLog.setAttribute("class", "score-list");
+highScoreLog.textContent = sortedScores[i].initials + " - " + sortedScores[i].score;
+
+highScoreEl.appendChild(highScoreLog);
+}
+
+pageContentEl.appendChild(highScoreEl);
+
+}
+
+
+var saveScores = function() {
+  localStorage.setItem("scores", JSON.stringify(highScores));
+}
+
+var highScoreSubmit = function(event) {
+  //event.preventDefault();
+  var highScoreInput = {
+    initials: document.querySelector("input[name='initials']").value,
+    score: quizScore};
+  highScores.push(highScoreInput);
+  saveScores();
+  console.log(highScoreInput, highScores);
+}
 
 //Function renders initial screen with start button
 var codingQuizStart = function(event) {
@@ -69,7 +113,8 @@ var createFinalScore = function(event) {
   highScoreFormEl.setAttribute("id", "task-form");
   highScoreFormEl.innerHTML = "<input type='text' name='initials' placeholder='Enter your initials!'/>";
   var scoreSubmitBtnEl = document.createElement ("button");
-  scoreSubmitBtnEl.setAttribute("form", "btn answer-choice");
+  scoreSubmitBtnEl.setAttribute("class", "btn submit");
+  scoreSubmitBtnEl.setAttribute("type", "submit");
   scoreSubmitBtnEl.textContent = "Submit";
   quizEndContainerEl.appendChild(highScorePromptEl);
   quizEndContainerEl.appendChild(highScoreFormEl);
@@ -139,6 +184,10 @@ var taskButtonHandler = function(event) {
   createQuizQuestion(questionStatus); 
   countdown();
   } 
+  else if (targetEl.matches(".submit")) {
+    highScoreSubmit();
+    displayScores();
+  }
 };
 var checkAnswerChoice = function(targetEl) {
  if (questionStatus>0) {
@@ -197,6 +246,7 @@ var createAnswerCheck = function(string) {
 //User inputs their initials
 //Their score is saved to local storage 
 
+///// END OF ASSIGNMENT ////////
 var timerEl = document.getElementById('countdown');
 var mainEl = document.getElementById('main');
 var startBtn = document.getElementById('start');
@@ -241,4 +291,6 @@ function displayMessage() {
 //startBtn.onclick = countdown;
 
 codingQuizStart();
-pageContentEl.addEventListener("click", taskButtonHandler)
+pageContentEl.addEventListener("click", taskButtonHandler);
+window.addEventListener("load", loadScores);
+
