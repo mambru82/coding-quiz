@@ -17,7 +17,7 @@ var loadScores = function () {
     } else {
     submittedScores = JSON.parse(submittedScores);
     existingScores = JSON.parse(existingScores);
-    existingScores.push(submittedScores);
+    existingScores.push(...submittedScores);
     console.log(existingScores);
     return existingScores;}
     }
@@ -26,15 +26,8 @@ var saveScores = function() {
       }
 
 var displayScores = function (event) {
-  //  var existingScores = [];
-  //  existingScores = loadScores();
-    var existingScores = localStorage.getItem("high-scores");
-    existingScores = JSON.parse(existingScores);
-    var submittedScores = localStorage.getItem("scores");
-    submittedScores = JSON.parse(submittedScores);
-    var combinedScores = existingScores.push(submittedScores);
-    console.log(combinedScores);
-    var sortedScores = submittedScores;
+    existingScores = loadScores();
+    var sortedScores = existingScores;
     sortedScores.sort(function(a,b){return b.score - a.score});
        
     var highScoreEl = document.createElement("ol");

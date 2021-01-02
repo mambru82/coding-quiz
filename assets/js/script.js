@@ -46,14 +46,14 @@ scoreKeepEl.appendChild(timeRemainingEl);
 //}
 
 //loads the scores saved on local storage
-var loadScores = function () {
-highScores = localStorage.getItem("scores");
-if (highScores === null) {
-  highScores = [];
-  return false
-}
-highScores = JSON.parse(highScores);
-}
+//var loadScores = function () {
+//highScores = localStorage.getItem("scores");
+//if (highScores === null) {
+//  highScores = [];
+//  return false
+//}
+//highScores = JSON.parse(highScores);
+//}
 
 var saveScores = function() {
   localStorage.setItem("scores", JSON.stringify(highScores));
@@ -292,6 +292,5 @@ function displayMessage() {
 
 codingQuizStart();
 pageContentEl.addEventListener("click", taskButtonHandler);
-scoreKeepEl.addEventListener("click", displayScores);
-window.addEventListener("load", loadScores);
+//window.addEventListener("load", loadScores);
 
