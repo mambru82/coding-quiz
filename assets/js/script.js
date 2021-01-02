@@ -18,6 +18,10 @@ var quizArray = [{
   answerChoices: ["no", "yes"],
   answerKey: [false, true]
 }]
+
+// END OF QUIZ
+
+
 var highScores = [];
 var questionStatus=0;
 var timeRemaining=65;
@@ -25,22 +29,21 @@ var quizScore = 0;
 var pageContentEl = document.querySelector("#page-content");
 var footerContentEl = document.querySelector("#footer-element");
 var scoreKeepEl = document.querySelector("#score-content");
-//renders the timer element and the link to the high scores
+
+//var renderHeader = function() {
+//renders the timer element 
 var timeRemainingEl = document.createElement("div");
 timeRemainingEl.setAttribute("text-align", "right");
 timeRemainingEl.setAttribute("class", "btn time-remaining");
 
-
 //renders the button to the high scores
 var highScoreEl = document.createElement("div");
-highScoreEl.setAttribute("class", "btn high-score");
-var highScoreButtonEl = document.createElement("button");
-highScoreButtonEl.setAttribute("class", "btn high-score");
-highScoreButtonEl.textContent = "View High Scores";
-highScoreEl.appendChild(highScoreButtonEl);
+highScoreEl.setAttribute("class", " high-score");
+highScoreEl.innerHTML= "<a href='./assets/html/highscores.html'> View High Scores </a>"
 
 scoreKeepEl.appendChild(highScoreEl);
 scoreKeepEl.appendChild(timeRemainingEl);
+//}
 
 //loads the scores saved on local storage
 var loadScores = function () {
@@ -52,30 +55,15 @@ if (highScores === null) {
 highScores = JSON.parse(highScores);
 }
 
-//function to display the scores
-var displayScores = function (event) {
-//sort the scores on the array from highest to lowest
-var sortedScores = highScores.slice(0);
-sortedScores.sort(function(a,b){return b.score - a.score})
-console.log(sortedScores);
-// clear the screen
-var highScoreEl = document.createElement("ol");
-
-for (let i=0; i < sortedScores.length; i++) {
-var highScoreLog = document.createElement("li");
-highScoreLog.setAttribute("class", "score-list");
-highScoreLog.textContent = sortedScores[i].initials + " - " + sortedScores[i].score;
-
-highScoreEl.appendChild(highScoreLog);
-}
-
-pageContentEl.appendChild(highScoreEl);
-
-}
-
-
 var saveScores = function() {
   localStorage.setItem("scores", JSON.stringify(highScores));
+}
+
+var clearScores = function() {
+  localStorage.clear("scores");
+  highScores = [];
+  console.log("trying to reset");
+  return highScores;
 }
 
 var highScoreSubmit = function(event) {
@@ -90,6 +78,7 @@ var highScoreSubmit = function(event) {
 
 //Function renders initial screen with start button
 var codingQuizStart = function(event) {
+ // renderHeader();
   var quizStartContainerEl = document.createElement("div");
   quizStartContainerEl.className = "starting-page";
   quizStartContainerEl.innerHTML = "<h1 class='welcome-page'> Coding Quiz Challenge </h1> <p class='welcome-content'> Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds! </p>";
@@ -125,7 +114,9 @@ var createFinalScore = function(event) {
 //Quiz functionality
   //Array of possible answers is presented as buttons 
 var createQuizQuestion = function(questionStatus){
-  if (questionStatus===0) {
+  if (questionStatus===0 || questionStatus >=quizArray.length) {
+  questionStatus = 0;
+  timeRemaining = 65;
   var clearStart = document.querySelector(".starting-page"); 
   clearStart.remove();
   }
@@ -181,12 +172,21 @@ var taskButtonHandler = function(event) {
     checkAnswerChoice(targetEl);
   }
   else if (targetEl.matches(".start-button")) {
+  questionStatus = 0;
+  timeRemaining = 65;
+  quizScore = 0;
   createQuizQuestion(questionStatus); 
   countdown();
   } 
   else if (targetEl.matches(".submit")) {
     highScoreSubmit();
-    displayScores();
+    window.location.href = "./assets/html/highscores.html";
+  }
+  else if (targetEl.matches(".go-back")) {
+    codingQuizStart();
+  }
+  else if (targetEl.matches(".resetter")) {
+    clearScores();
   }
 };
 var checkAnswerChoice = function(targetEl) {
@@ -212,9 +212,9 @@ var checkAnswerChoice = function(targetEl) {
   questionStatus++;
   if (questionStatus < quizArray.length && timeRemaining>0) {
   createQuizQuestion(questionStatus);}
-  //else {console.log("end of the quiz!");
-  //createFinalScore();
-  //}
+ // else {console.log("end of the quiz!");
+ // questionStatus = 0;
+ // }
 }
 
 var createAnswerCheck = function(string) {
@@ -292,5 +292,6 @@ function displayMessage() {
 
 codingQuizStart();
 pageContentEl.addEventListener("click", taskButtonHandler);
+scoreKeepEl.addEventListener("click", displayScores);
 window.addEventListener("load", loadScores);
 
