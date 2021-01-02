@@ -20,10 +20,29 @@ var quizArray = [{
 }]
 
 var questionStatus=0;
+var timeRemaining=65;
 var quizScore = 0;
-var timeRemaining = 20;
 var pageContentEl = document.querySelector("#page-content");
 var footerContentEl = document.querySelector("#footer-element");
+var scoreKeepEl = document.querySelector("#score-content");
+
+//renders the timer element and the link to the high scores
+var timeRemainingEl = document.createElement("div");
+timeRemainingEl.setAttribute("text-align", "right");
+timeRemainingEl.setAttribute("class", "btn time-remaining");
+
+
+//renders the button to the high scores
+var highScoreEl = document.createElement("div");
+highScoreEl.setAttribute("class", "btn high-score");
+var highScoreButtonEl = document.createElement("button");
+highScoreButtonEl.setAttribute("class", "btn high-score");
+highScoreButtonEl.textContent = "View High Scores";
+highScoreEl.appendChild(highScoreButtonEl);
+
+scoreKeepEl.appendChild(highScoreEl);
+scoreKeepEl.appendChild(timeRemainingEl);
+
 
 //Function renders initial screen with start button
 var codingQuizStart = function(event) {
@@ -87,18 +106,22 @@ var createQuizQuestion = function(questionStatus){
   }
   questionContainerEl.appendChild(answerChoiceContainerEl);
   pageContentEl.appendChild(questionContainerEl);}
-  
-  var countdown = function(){
+
+//countdown function
+var countdown = function(){
   var timeInterval = setInterval(function() {
-    if (timeRemaining===0){
+    if (timeRemaining<=0 || questionStatus===quizArray.length){
     clearInterval(timeInterval);
-    var questionClear = document.querySelector(".quiz-question");
-    questionClear.remove();
+    timeRemaining = 0;
+    timeRemainingEl.textContent = "Time remaining: " + timeRemaining;
+    //var questionClear = document.querySelector(".quiz-question");
+    //questionClear.remove();
     createFinalScore();
     } else {
-    timeRemaining--;
     console.log(timeRemaining);
-    return timeRemaining;}
+    timeRemainingEl.textContent = "Time remaining: " + timeRemaining;
+    timeRemaining--;
+    }
     }, 1000);}
 //task button handler will determine what happens with a click
 //CONSIDER using a switch for the taskButton a switch 
@@ -140,9 +163,9 @@ var checkAnswerChoice = function(targetEl) {
   questionStatus++;
   if (questionStatus < quizArray.length && timeRemaining>0) {
   createQuizQuestion(questionStatus);}
-  else {console.log("end of the quiz!");
-  createFinalScore();
-  }
+  //else {console.log("end of the quiz!");
+  //createFinalScore();
+  //}
 }
 
 var createAnswerCheck = function(string) {
