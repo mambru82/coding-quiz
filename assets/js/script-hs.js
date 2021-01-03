@@ -10,16 +10,17 @@ var clearScores = function() {
   }
 var loadScores = function () {
     var submittedScores = localStorage.getItem("scores");
-    var existingScores = localStorage.getItem("high-scores");
-    if (existingScores === null) {
-      existingScores = [];
-      return false;
-    } else {
     submittedScores = JSON.parse(submittedScores);
+    
+    if (existingScores === null || existingScores === false) {
+    existingScores = [];
+    } else {
+    existingScores = localStorage.getItem("high-scores");
     existingScores = JSON.parse(existingScores);
+    }
     existingScores.push(...submittedScores);
     console.log(existingScores);
-    return existingScores;}
+    return existingScores;
     }
 var saveScores = function() {
         localStorage.setItem("high-scores", JSON.stringify(existingScores));
@@ -27,8 +28,7 @@ var saveScores = function() {
 
 var displayScores = function (event) {
     existingScores = loadScores();
-    var sortedScores = existingScores;
-    sortedScores.sort(function(a,b){return b.score - a.score});
+    var sortedScores = existingScores.sort(function(a,b){return b.score - a.score});
        
     var highScoreEl = document.createElement("ol");
     
@@ -50,7 +50,7 @@ var displayScores = function (event) {
     pageContentEl.appendChild(highScoreEl);
     pageContentEl.appendChild(goBackButton);
     pageContentEl.appendChild(resetButton);
-    
+  
     }
 var taskButtonHandler = function(event) {
         //get target element from event
