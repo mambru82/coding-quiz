@@ -95,19 +95,19 @@ var createFinalScore = function(event) {
   quizEndContainerEl.className = "end-screen";
   quizEndContainerEl.innerHTML = "<h1 class='end-page'>All done! </h1> <p class='end-content'>Your final score is " + quizScore + ". </p>";
   var highScorePromptEl = document.createElement("div");
-  highScorePromptEl.setAttribute("class", "form-group");
-  highScorePromptEl.innerHTML="<h3>Enter your Initials to save your score!</h3>";
-  var highScoreFormEl = document.createElement ("div");
-  highScoreFormEl.setAttribute("class", "form-group");
+  highScorePromptEl.setAttribute("class", "form-wrapper form-group");
+  highScorePromptEl.innerHTML="<p>Enter your Initials to save your score!</p>";
+  var highScoreFormEl = document.createElement ("form");
+  highScoreFormEl.setAttribute("class", "form-input");
   highScoreFormEl.setAttribute("id", "task-form");
   highScoreFormEl.innerHTML = "<input type='text' name='initials' placeholder='Enter your initials!'/>";
   var scoreSubmitBtnEl = document.createElement ("button");
   scoreSubmitBtnEl.setAttribute("class", "btn submit");
   scoreSubmitBtnEl.setAttribute("type", "submit");
   scoreSubmitBtnEl.textContent = "Submit";
+  highScorePromptEl.appendChild(highScoreFormEl);
+  highScorePromptEl.appendChild(scoreSubmitBtnEl);
   quizEndContainerEl.appendChild(highScorePromptEl);
-  quizEndContainerEl.appendChild(highScoreFormEl);
-  quizEndContainerEl.appendChild(scoreSubmitBtnEl);
   console.log(quizEndContainerEl);
   pageContentEl.appendChild(quizEndContainerEl);
 }
@@ -126,15 +126,15 @@ var createQuizQuestion = function(questionStatus){
   questionContainerEl.setAttribute("id", questionStatus);
 
   // render quiz question
-  questionContainerEl.innerHTML = "<h3 class='question-number'>" +  quizArray[questionStatus].questionNumber + "</h3><span class='question-text'>" + quizArray[questionStatus].questionTxt + "</span>";
+  questionContainerEl.innerHTML = "<h3 class='question-text'>" +  quizArray[questionStatus].questionNumber + ". " + quizArray[questionStatus].questionTxt + "</h3>";
 
   // render answer choices
-  var answerChoiceContainerEl = document.createElement("ol");
+  var answerChoiceContainerEl = document.createElement("ul");
 
   for (var i=0; i < quizArray[questionStatus].answerChoices.length; i++) {
   var answerChoiceEl = document.createElement("li");
   var answerButtonEl = document.createElement("button");
-  answerButtonEl.textContent = quizArray[questionStatus].answerChoices[i];
+  answerButtonEl.textContent = (i+1) + ". " + quizArray[questionStatus].answerChoices[i];
   answerButtonEl.className = "btn answer-choice";
   answerButtonEl.setAttribute("data-id", i);
   answerChoiceEl.appendChild(answerButtonEl);
@@ -146,12 +146,20 @@ var createQuizQuestion = function(questionStatus){
 //countdown function
 var countdown = function(){
   var timeInterval = setInterval(function() {
-    if (timeRemaining<=0 || questionStatus===quizArray.length){
+    if (timeRemaining === 0 && questionStatus < quizArray.length){
+      clearInterval(timeInterval);
+      timeRemaining = 0;
+      timeRemainingEl.textContent = "Time remaining: " + timeRemaining;
+      var questionClear = document.querySelector(".quiz-question");
+      questionClear.remove();
+      createFinalScore();
+    }
+    else if (timeRemaining<=0 || questionStatus===quizArray.length){
     clearInterval(timeInterval);
     timeRemaining = 0;
     timeRemainingEl.textContent = "Time remaining: " + timeRemaining;
-    //var questionClear = document.querySelector(".quiz-question");
-    //questionClear.remove();
+ //   var questionClear = document.querySelector(".quiz-question");
+ //   questionClear.remove();
     createFinalScore();
     } else {
     console.log(timeRemaining);
@@ -167,9 +175,9 @@ var taskButtonHandler = function(event) {
   //if an answer choice was clicked
   if (targetEl.matches(".answer-choice")){
     //clears previous question and answer
-    var questionClear = document.querySelector(".quiz-question");
-    questionClear.remove();
-    checkAnswerChoice(targetEl);
+   var questionClear = document.querySelector(".quiz-question");
+   questionClear.remove();
+   checkAnswerChoice(targetEl);
   }
   else if (targetEl.matches(".start-button")) {
   questionStatus = 0;
@@ -190,7 +198,8 @@ var taskButtonHandler = function(event) {
   }
 };
 var checkAnswerChoice = function(targetEl) {
- if (questionStatus>0) {
+ //checks to see if there's a previous correct/incorrect answer present, clears the previous answer check
+  if (questionStatus>0) {
    var answerClear = document.querySelector(".answer-status");
    answerClear.remove();
   }
@@ -212,9 +221,10 @@ var checkAnswerChoice = function(targetEl) {
   questionStatus++;
   if (questionStatus < quizArray.length && timeRemaining>0) {
   createQuizQuestion(questionStatus);}
- // else {console.log("end of the quiz!");
- // questionStatus = 0;
- // }
+  //else {
+  //  console.log("end of the quiz!");
+  //questionStatus = 0;
+  //}
 }
 
 var createAnswerCheck = function(string) {
@@ -246,49 +256,6 @@ var createAnswerCheck = function(string) {
 //User inputs their initials
 //Their score is saved to local storage 
 
-///// END OF ASSIGNMENT ////////
-var timerEl = document.getElementById('countdown');
-var mainEl = document.getElementById('main');
-var startBtn = document.getElementById('start');
-
-var message =
-  'Congratulations! Now you are prepared to tackle the Challenge this week! Good luck!';
-var words = message.split(' ');
-
-// Timer that counts down from 5
-function countdown() {
-  var timeLeft = 5;
-
-  // TODO: Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
-  var timeInterval = setInterval(function() {
-    if (timeLeft === 0) {
-      clearInterval(timeInterval);
-      displayMessage();
-    } else {
-      mainEl.textContent=timeLeft;
-      console.log(timeLeft);
-      timeLeft--;
-    }
-  }, 1000);
-}
-
-// Displays the message one word at a time
-function displayMessage() {
-  var wordCount = 0;
-
-  // Uses the `setInterval()` method to call a function to be executed every 300 milliseconds
-  var msgInterval = setInterval(function() {
-    if (words[wordCount] === undefined) {
-      clearInterval(msgInterval);
-    } else {
-      mainEl.textContent = words[wordCount];
-      console.log(words[wordCount]);
-      wordCount++;
-    }
-  }, 300);
-}
-
-//startBtn.onclick = countdown;
 
 codingQuizStart();
 pageContentEl.addEventListener("click", taskButtonHandler);
