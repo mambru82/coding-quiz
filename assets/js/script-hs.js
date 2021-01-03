@@ -3,17 +3,20 @@ var pageContentEl = document.querySelector("#page-content");
 var scoreListEl = document.querySelector(".score-list")
 var footerContentEl = document.querySelector("#footer-element");
 var scoreKeepEl = document.querySelector("#score-content");
+//Clears the scores
 var clearScores = function() {
     localStorage.clear();
+    //resets existing scores to an empty array
     existingScores = [];
+    //saves the empty array (necessary in order to deal with saving scores after a reset)
     saveScores();
-    console.log("trying to reset");
     return existingScores;
   }
 var loadScores = function () {
+    //loads the score submitted in the prior page
     var submittedScores = localStorage.getItem("scores");
     submittedScores = JSON.parse(submittedScores);
-    
+    //if existing high score is null, generates an empty array, otherwise parses the saved high-scores
     if (existingScores === null || existingScores === false || existingScores === []) {
     existingScores = [];
     } else {
@@ -24,17 +27,22 @@ var loadScores = function () {
     console.log(existingScores);
     return existingScores;
     }
+
+    //saves the scores to high-scores, clears the submitted scores (prevents duplication of scores in subsequent submissions)
 var saveScores = function() {
         localStorage.setItem("high-scores", JSON.stringify(existingScores));
         localStorage.setItem("scores", "[]");
       }
 
+      //renders the high scores 
 var displayScores = function (event) {
     existingScores = loadScores();
+    //sorts the scores from highest to lowest
     var sortedScores = existingScores.sort(function(a,b){return b.score - a.score});
-       
-    var highScoreEl = document.createElement("ol");
     
+    //renders the scores in an ordered list
+    var highScoreEl = document.createElement("ol");
+    //iterates through the scores and generates a list item for each one
     for (let i=0; i < sortedScores.length; i++) {
     var highScoreLog = document.createElement("li");
     highScoreLog.setAttribute("class", "score-list");
@@ -42,27 +50,21 @@ var displayScores = function (event) {
     
     highScoreEl.appendChild(highScoreLog);
     }
-    var goBackButton = document.createElement("button");
-    goBackButton.setAttribute("class", "btn go-back");
-    goBackButton.textContent = "Go Back";
-    
-    var resetButton = document.createElement("button");
-    resetButton.setAttribute("class", "btn resetter");
-    resetButton.textContent = "Reset";
-    
+  
     scoreListEl.appendChild(highScoreEl);
-   // pageContentEl.appendChild(goBackButton);
-   // pageContentEl.appendChild(resetButton);
   
     }
+
+    //distinguishes between the go back button and the reset scores button
 var taskButtonHandler = function(event) {
         //get target element from event
         var targetEl = event.target;
-        //if an answer choice was clicked
+        //if go back is clicked
         if (targetEl.matches(".go-back")) {
           saveScores();
           window.location.href = "../../index.html";
         }
+        //if reset scores is clicked
         else if (targetEl.matches(".resetter")) {
           clearScores();
           scoreListEl.remove();
@@ -71,5 +73,4 @@ var taskButtonHandler = function(event) {
     };
 displayScores();
 pageContentEl.addEventListener("click", taskButtonHandler);
-//scoreKeepEl.addEventListener("click", displayScores);
 window.addEventListener("load", loadScores);
