@@ -88,7 +88,7 @@ var createFinalScore = function(event) {
   quizEndContainerEl.innerHTML = "<h1 class='end-page'>All done! </h1> <p class='end-content'>Your final score is " + quizScore + ". </p>";
   var highScorePromptEl = document.createElement("div");
   highScorePromptEl.setAttribute("class", "form-wrapper form-group");
-  highScorePromptEl.innerHTML="<p>Enter your Initials to save your score!</p>";
+  highScorePromptEl.innerHTML="<p>Enter Initials!</p>";
   var highScoreFormEl = document.createElement ("form");
   highScoreFormEl.setAttribute("class", "form-input");
   highScoreFormEl.setAttribute("id", "task-form");
