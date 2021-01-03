@@ -34,7 +34,7 @@ var scoreKeepEl = document.querySelector("#score-content");
 //renders the timer element 
 var timeRemainingEl = document.createElement("div");
 timeRemainingEl.setAttribute("text-align", "right");
-timeRemainingEl.setAttribute("class", "btn time-remaining");
+timeRemainingEl.setAttribute("class", "time-remaining");
 
 //renders the button to the high scores
 var highScoreEl = document.createElement("div");
@@ -45,15 +45,7 @@ scoreKeepEl.appendChild(highScoreEl);
 scoreKeepEl.appendChild(timeRemainingEl);
 //}
 
-//loads the scores saved on local storage
-//var loadScores = function () {
-//highScores = localStorage.getItem("scores");
-//if (highScores === null) {
-//  highScores = [];
-//  return false
-//}
-//highScores = JSON.parse(highScores);
-//}
+
 
 var saveScores = function() {
   localStorage.setItem("scores", JSON.stringify(highScores));
@@ -221,10 +213,7 @@ var checkAnswerChoice = function(targetEl) {
   questionStatus++;
   if (questionStatus < quizArray.length && timeRemaining>0) {
   createQuizQuestion(questionStatus);}
-  //else {
-  //  console.log("end of the quiz!");
-  //questionStatus = 0;
-  //}
+
 }
 
 var createAnswerCheck = function(string) {

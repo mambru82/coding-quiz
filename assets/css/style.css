@@ -134,8 +134,21 @@
     text-align: left;
   }
   
+  .time-remaining {
+    background: white;
+    color: black;
+    font-size: 24px;
+  }
+
+  a {
+    background: white;
+    font-size: 24px;
+    padding: 5px;
+  }
   
-  
+  .question-text {
+    font-size: 36px;
+  }
   
   
   
