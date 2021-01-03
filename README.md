@@ -32,5 +32,5 @@ The [website][1] is hosted by github
 - Web-site is free to use. 
 
 
-[1]: https://mambru82.github.io/password_generator/
+[1]: https://mambru82.github.io/coding-quiz/
 [screenshot]: ./assets/images/quiz_screenshot.png
