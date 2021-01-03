@@ -29,8 +29,9 @@
   
   header h1 {
     color: var(--tertiary);
-    margin: 5px 0 20px;
-    font-size: 2rem;
+    margin: 0 auto;
+    font-size: 3.2rem;
+    text-align: center;
   }
   
   p {
@@ -49,7 +50,7 @@
     flex-direction: row;
     justify-content: center;
   }
-  
+
   form input {
     outline: none;
     border: none;
@@ -130,6 +131,7 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    margin: 0 auto;
 
   }
   
