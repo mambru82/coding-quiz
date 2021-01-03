@@ -65,9 +65,11 @@ var taskButtonHandler = function(event) {
         }
         else if (targetEl.matches(".resetter")) {
           clearScores();
+          scoreListEl.remove();
+          loadScores();
         }
     };
 displayScores();
 pageContentEl.addEventListener("click", taskButtonHandler);
-scoreKeepEl.addEventListener("click", displayScores);
+//scoreKeepEl.addEventListener("click", displayScores);
 window.addEventListener("load", loadScores);

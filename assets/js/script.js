@@ -59,13 +59,14 @@ var clearScores = function() {
 }
 
 var highScoreSubmit = function(event) {
-  //event.preventDefault();
+  event.preventDefault();
   var highScoreInput = {
     initials: document.querySelector("input[name='initials']").value,
     score: quizScore};
   highScores.push(highScoreInput);
   saveScores();
   console.log(highScoreInput, highScores);
+  window.location.href = "./assets/html/highscores.html";
 }
 
 //Function renders initial screen with start button
@@ -97,8 +98,8 @@ var createFinalScore = function(event) {
   scoreSubmitBtnEl.setAttribute("class", "btn submit");
   scoreSubmitBtnEl.setAttribute("type", "submit");
   scoreSubmitBtnEl.textContent = "Submit";
+  highScoreFormEl.appendChild(scoreSubmitBtnEl);
   highScorePromptEl.appendChild(highScoreFormEl);
-  highScorePromptEl.appendChild(scoreSubmitBtnEl);
   quizEndContainerEl.appendChild(highScorePromptEl);
   console.log(quizEndContainerEl);
   pageContentEl.appendChild(quizEndContainerEl);
@@ -248,5 +249,6 @@ var createAnswerCheck = function(string) {
 
 codingQuizStart();
 pageContentEl.addEventListener("click", taskButtonHandler);
+pageContentEl.addEventListener("submit", highScoreSubmit);
 //window.addEventListener("load", loadScores);
 
