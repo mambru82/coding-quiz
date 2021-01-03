@@ -1,5 +1,6 @@
 var existingScores=[];
 var pageContentEl = document.querySelector("#page-content");
+var scoreListEl = document.querySelector(".score-list")
 var footerContentEl = document.querySelector("#footer-element");
 var scoreKeepEl = document.querySelector("#score-content");
 var clearScores = function() {
@@ -49,9 +50,9 @@ var displayScores = function (event) {
     resetButton.setAttribute("class", "btn resetter");
     resetButton.textContent = "Reset";
     
-    pageContentEl.appendChild(highScoreEl);
-    pageContentEl.appendChild(goBackButton);
-    pageContentEl.appendChild(resetButton);
+    scoreListEl.appendChild(highScoreEl);
+   // pageContentEl.appendChild(goBackButton);
+   // pageContentEl.appendChild(resetButton);
   
     }
 var taskButtonHandler = function(event) {
