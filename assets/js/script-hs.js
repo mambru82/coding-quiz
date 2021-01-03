@@ -1,4 +1,5 @@
 var existingScores=[];
+var submittedScores=[];
 var pageContentEl = document.querySelector("#page-content");
 var scoreListEl = document.querySelector(".score-list")
 var footerContentEl = document.querySelector("#footer-element");
@@ -16,9 +17,11 @@ var loadScores = function () {
     //loads the score submitted in the prior page
     var submittedScores = localStorage.getItem("scores");
     submittedScores = JSON.parse(submittedScores);
+        
     //if existing high score is null, generates an empty array, otherwise parses the saved high-scores
-    if (existingScores === null || existingScores === false || existingScores === []) {
+    if (localStorage.getItem("scores")==="[]") {
     existingScores = [];
+    localStorage.setItem("high-scores", "[]")
     } else {
     existingScores = localStorage.getItem("high-scores");
     existingScores = JSON.parse(existingScores);

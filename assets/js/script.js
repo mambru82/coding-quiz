@@ -95,6 +95,8 @@ var highScoreSubmit = function(event) {
 
 //Function renders initial screen with start button
 var codingQuizStart = function(event) {
+  localStorage.setItem("scores", "[]");
+  //localStorage.setItem("high-scores", "[]");
  // renderHeader();
   var quizStartContainerEl = document.createElement("div");
   quizStartContainerEl.className = "starting-page";
