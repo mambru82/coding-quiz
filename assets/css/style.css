@@ -37,15 +37,34 @@
   p {
     font-size:1.6rem;
   }
-  li {
+  ul li {
     font-size: 1.6rem;
     color: black;
     list-style-type: none;
   }
+
+  ol {
+    margin: 0;
+    padding-left: 0;
+    justify-content: center;
+  }
+
+  ol li {
+    font-size: 1.6rem;
+    color: black;
+    text-align: center;
+  }
+
+  section .score-list {
+    align-items: stretch;
+    justify-content: center;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
   
   .form-wrapper {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
@@ -67,14 +86,18 @@
 
   .form-wrapper p {
     line-height: 1.5px;
+    padding-right: 10px;
   }
   
   footer {
     width: 100%;
     background: white;
-    color: var(--tertiary);
+    color: grey;
     font-size: 2.4rem;
     padding: 20px;
+    margin-left: 25%;
+    margin-bottom: 40%;
+    margin-right: 15%;
   }
   
   .page-title {
@@ -89,8 +112,9 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
     margin: 25px auto;
-    padding-left: 15px;
+    padding: 15px;
     width: 95%;
   }
   
@@ -130,14 +154,18 @@
   .content-wrapper {
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-wrap: wrap;
     margin: 0 auto;
+    width: 60%;
 
   }
   
   .score-list {
     width: 100%;
-    text-align: left;
+    padding-bottom: 10px;
+    text-align: center;
+    list-style-position: inside;
   }
   
   .time-remaining {
@@ -156,7 +184,15 @@
     font-size: 36px;
   }
   
-  
+  .end-screen {
+    width: 30%;
+    text-align: center;
+  }
+
+  .answer-status {
+    width: 40%;
+    border-top: solid grey
+  }
   
   
   @media screen and (max-width: 980px) {
