@@ -3,8 +3,9 @@ var pageContentEl = document.querySelector("#page-content");
 var footerContentEl = document.querySelector("#footer-element");
 var scoreKeepEl = document.querySelector("#score-content");
 var clearScores = function() {
-    localStorage.clear("scores");
+    localStorage.clear();
     existingScores = [];
+    saveScores();
     console.log("trying to reset");
     return existingScores;
   }
@@ -12,7 +13,7 @@ var loadScores = function () {
     var submittedScores = localStorage.getItem("scores");
     submittedScores = JSON.parse(submittedScores);
     
-    if (existingScores === null || existingScores === false) {
+    if (existingScores === null || existingScores === false || existingScores === []) {
     existingScores = [];
     } else {
     existingScores = localStorage.getItem("high-scores");
@@ -24,6 +25,7 @@ var loadScores = function () {
     }
 var saveScores = function() {
         localStorage.setItem("high-scores", JSON.stringify(existingScores));
+        localStorage.setItem("scores", "[]");
       }
 
 var displayScores = function (event) {
