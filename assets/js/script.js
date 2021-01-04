@@ -9,7 +9,7 @@ var quizArray = [{
 {
   questionNumber: 2,
   questionTxt: "The main difference between a for loop and a while loop is:",
-  answerChoices: ["one fors, one whiles", "one sets an incremental loop, the other sets a loop with a fixed condition", "Your momma"],
+  answerChoices: ["one fors, one whiles", "one sets an incremental loop, the other sets a loop with a fixed condition", "Don't know"],
   answerKey: [false, true, false]
 },
 {

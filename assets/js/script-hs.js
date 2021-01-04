@@ -19,12 +19,12 @@ var loadScores = function () {
     submittedScores = JSON.parse(submittedScores);
         
     //if existing high score is null, generates an empty array, otherwise parses the saved high-scores
-    if (localStorage.getItem("scores")==="[]") {
-    existingScores = [];
-    localStorage.setItem("high-scores", "[]")
-    } else {
+    if ("high-scores" in localStorage) {
     existingScores = localStorage.getItem("high-scores");
     existingScores = JSON.parse(existingScores);
+    } else {
+    existingScores = [];
+    localStorage.setItem("high-scores", "[]")
     }
     existingScores.push(...submittedScores);
     console.log(existingScores);
@@ -76,4 +76,4 @@ var taskButtonHandler = function(event) {
     };
 displayScores();
 pageContentEl.addEventListener("click", taskButtonHandler);
-window.addEventListener("load", loadScores);
+//window.addEventListener("load", loadScores);
